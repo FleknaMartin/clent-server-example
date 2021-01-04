@@ -13,8 +13,9 @@ message PaymentRequest {
 
 message PaymentResponse {
     enum Result {
-        SUCCESS = 0;
-        FAILURE = 1;
+        UNKNOWN = 0;
+        SUCCESS = 1;
+        FAILURE = 2;
     }
     Result result = 1;
     string message = 2;
@@ -31,4 +32,5 @@ message BigDecimal {
 
 service PaymentService {
     rpc createPayment(PaymentRequest) returns (PaymentResponse);
+    rpc streamPayments(stream PaymentRequest) returns (stream PaymentResponse);
 }

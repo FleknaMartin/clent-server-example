@@ -1,0 +1,19 @@
+grpc:
+  port: 7081
+  security:
+    cert-chain: serverCert.pem
+    private-key: serverKey.pem
+
+spring:
+  application:
+    name: example-server
+  datasource:
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false

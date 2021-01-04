@@ -1,0 +1,19 @@
+grpc:
+  port: 7080
+  security:
+    cert-chain: serverCert.pem
+    private-key: serverKey.pem
+
+spring:
+  application:
+    name: example-server
+  datasource:
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
+    url:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
