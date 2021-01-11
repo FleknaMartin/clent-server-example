@@ -66,11 +66,11 @@ public class CreateCardTransactionValidator implements ICreateCardTransactionVal
             NotNullValidator.validate(result, cardHolder, CardHolderTo.class);
             NotBlankStringValidator.validate(result, cardNumber, "card number");
             CardNumberValidator.validate(result, cardNumber);
-            ValidateCardHOlder(result, cardHolder);
+            validateCardHolder(result, cardHolder);
         }
     }
 
-    private void ValidateCardHOlder(ValidationResult result, CardHolderTo cardHolder) {
+    private void validateCardHolder(ValidationResult result, CardHolderTo cardHolder) {
         if (cardHolder != null) {
             NotBlankStringValidator.validate(result, cardHolder.getFirstName(), "firstName");
             NotBlankStringValidator.validate(result, cardHolder.getLastName(), "lastName");

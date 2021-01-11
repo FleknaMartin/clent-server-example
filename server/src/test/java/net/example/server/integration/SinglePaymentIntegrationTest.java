@@ -1,39 +1,23 @@
 package net.example.server.integration;
 
-import io.grpc.CallCredentials;
-import io.grpc.ManagedChannel;
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NettyChannelBuilder;
-import io.netty.handler.ssl.SslContext;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.Step;
-import net.example.grpc.BigDecimal;
 import net.example.grpc.PaymentRequest;
 import net.example.grpc.PaymentResponse;
 import net.example.grpc.PaymentServiceGrpc;
 import net.example.server.core.validation.util.massagepattern.ValidationPatterns;
-import net.example.server.jpa.entity.Card;
-import net.example.server.jpa.entity.CardHolder;
 import net.example.server.jpa.entity.Payment;
-import net.example.server.jpa.repository.CardHolderRepository;
-import net.example.server.jpa.repository.CardRepository;
-import net.example.server.jpa.repository.PaymentRepository;
-import net.example.server.util.BasicAuthenticationCallCredentials;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import static net.example.server.util.TestConstants.*;
 
@@ -47,8 +31,7 @@ public class SinglePaymentIntegrationTest extends BaseIntegrationTest {
     @Transactional
     public void singlePayment_success() {
         PaymentServiceGrpc.PaymentServiceBlockingStub stub
-                = PaymentServiceGrpc.newBlockingStub(channel)
-                .withCallCredentials(credentials);
+                = PaymentServiceGrpc.newBlockingStub(channel);
 
         PaymentRequest request = createPayment(FIRST_NAME, LAST_NAME, GRPC_BIG_DECIMAL, CARD_NUMBER);
 
@@ -63,8 +46,7 @@ public class SinglePaymentIntegrationTest extends BaseIntegrationTest {
     @Transactional
     public void singlePayment_missingFirstNameInvalidCardNUmber_failure() {
         PaymentServiceGrpc.PaymentServiceBlockingStub stub
-                = PaymentServiceGrpc.newBlockingStub(channel)
-                .withCallCredentials(credentials);
+                = PaymentServiceGrpc.newBlockingStub(channel);
 
         PaymentRequest request = createPayment(StringUtils.EMPTY, FIRST_NAME, GRPC_BIG_DECIMAL, INVALID_CARD_NUMBER);
 

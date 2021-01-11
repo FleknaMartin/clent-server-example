@@ -8,14 +8,12 @@ import net.example.server.api.service.IPaymentService;
 import net.example.server.api.servicefacade.ICardPaymentServiceFacade;
 import net.example.server.api.to.*;
 import net.example.server.api.validation.ICreateCardTransactionValidator;
+import net.example.server.api.validation.ValidationError;
 import net.example.server.api.validation.ValidationResult;
-import net.example.server.jpa.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,7 +67,7 @@ public class CardPaymentServiceFacade implements ICardPaymentServiceFacade {
         } else {
             result.setResult(CreateCardTransactionResult.FAILURE);
             result.setMessage(validationResult.getValidationErrors().stream()
-                    .map(m -> m.getValidationErrorMessage())
+                    .map(ValidationError::getValidationErrorMessage)
                     .collect(Collectors.joining(";")));
         }
         return result;

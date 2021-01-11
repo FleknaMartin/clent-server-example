@@ -1,0 +1,166 @@
+<html>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <script src="resources/js/sockjs-0.3.4.js"></script>
+    <script src="resources/js/stomp.js"></script>
+
+    <script type="text/javascript">
+
+        var stompClient = null;
+        var paymentId = 0;
+
+        function setConnected(connected) {
+
+            document.getElementById('firstName').disabled = !connected;
+            document.getElementById('lastName').disabled = !connected;
+            document.getElementById('cardNumber').disabled = !connected;
+            document.getElementById('amount').disabled = !connected;
+            document.getElementById('sendMessage').disabled = !connected;
+            document.getElementById('validationResult').disabled = connected;
+
+        }
+
+        function connect() {
+
+            var socket = new SockJS('/payments');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/user/queue/payments', function (messageOutput) {
+
+                    showMessageOutput(JSON.parse(messageOutput.body));
+                });
+            });
+
+            setConnected(true);
+        }
+
+        function disconnect() {
+
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+
+            setConnected(false);
+            console.log("Disconnected");
+        }
+
+        function sendMessage() {
+            var send = validateInput();
+
+            if (send) {
+                var firstName = document.getElementById('firstName').value;
+                var lastName = document.getElementById('lastName').value;
+                var cardNumber = document.getElementById('cardNumber').value;
+                var amount = document.getElementById('amount').value;
+                stompClient.send("/app/payments", {}, JSON.stringify(
+                    {
+                        'firstName': firstName,
+                        'lastName': lastName,
+                        'cardNumber': cardNumber,
+                        'amount': amount
+                    }));
+            }
+        }
+
+        function validateInput() {
+            var result = document.getElementById('validationResult');
+            result.innerHTML = "";
+            var isValid = true;
+            result.disabled = isValid;
+
+            if (document.getElementById('firstName').value == ""){
+                result.innerHTML = result.innerHTML + "First Name is required. ";
+                isValid = false;
+            }
+            if (document.getElementById('lastName').value == ""){
+                result.innerHTML = result.innerHTML + "Last Name is required. ";
+                isValid = false;
+            }
+            if (document.getElementById('cardNumber').value == ""){
+                result.innerHTML = result.innerHTML + "Card Number is required. ";
+                isValid = false;
+            }
+            if (document.getElementById('amount').value == ""){
+                result.innerHTML = result.innerHTML + "Amount is required.";
+                isValid = false;
+            }
+            result.disabled = isValid;
+            return isValid;
+        }
+
+        function showMessageOutput(messageOutput) {
+            var oldResult = document.getElementById("result_" + messageOutput.id);
+            if (oldResult == null) {
+                createPayment(messageOutput)
+            } else {
+                oldResult.innerHTML = messageOutput.result;
+                var oldMessage = document.getElementById("message_" + messageOutput.id);
+                oldMessage.innerHTML = messageOutput.message;
+            }
+        }
+
+        function createPayment(message) {
+            var table = document.getElementById("resultTable")
+            var row = table.insertRow(1);
+            row.id = paymentId.toString();
+            var fullName = row.insertCell(0);
+            fullName.setAttribute("col", "fullName")
+            var cardNumber = row.insertCell(1);
+            cardNumber.setAttribute("col", "cardNumber")
+            var amount = row.insertCell(2);
+            amount.setAttribute("col", "amount")
+            var result = row.insertCell(3);
+            result.setAttribute("col", "result")
+            var msg = row.insertCell(4);
+            msg.setAttribute("col", "message")
+
+            result.id = "result_" + message.id;
+            msg.id = "message_" + message.id;
+
+            fullName.innerHTML = message.firstName + " " + message.lastName;
+            cardNumber.innerHTML = message.cardNumber;
+            amount.innerHTML = message.amount;
+            result.innerHTML = message.result;
+            msg.innerHTML = message.message;
+        }
+
+    </script>
+
+</head>
+
+<body onload="connect()">
+
+<div>
+    <div>
+        <input type="text" id="firstName" placeholder="First name"/>
+        <input type="text" id="lastName" placeholder="Last Name"/>
+        <input type="text" id="cardNumber" placeholder="Card Number"/>
+        <input type="text" id="amount" placeholder="Amount"/>
+        <button id="sendMessage" onclick="sendMessage();">Send</button>
+    </div>
+    <div>
+        <p id="validationResult"/>
+    </div>
+    <br/>
+
+    <br/>
+    <div id="response">
+        <table id="resultTable" style="width:100%">
+            <tr>
+                <th>Full Name</th>
+                <th>Card Number</th>
+                <th>Amount</th>
+                <th>Result</th>
+                <th>Message</th>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

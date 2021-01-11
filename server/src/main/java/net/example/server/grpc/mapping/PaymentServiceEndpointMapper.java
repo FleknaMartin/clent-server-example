@@ -20,7 +20,7 @@ public interface PaymentServiceEndpointMapper {
             @Mapping(target = "lastName", source = "payment.card.cardHolder.lastName"),
             @Mapping(target = "cardNumber", source = "payment.card.cardNumber")
     })
-    PaymentRequest PaymentRequestMapper(CreateCardPaymentTo to);
+    PaymentRequest mapPaymentRequest(CreateCardPaymentTo to);
 
     @Mappings({
             @Mapping(target = "payment.amount", source = "amount", qualifiedByName = "grpcBigDecimal2BigDecimal"),
@@ -29,13 +29,13 @@ public interface PaymentServiceEndpointMapper {
             @Mapping(target = "payment.card.cardHolder.lastName", source = "lastName"),
             @Mapping(target = "payment.card.cardNumber", source = "cardNumber")
     })
-    CreateCardPaymentTo CreateCardTransactionToMapper(PaymentRequest request);
+    CreateCardPaymentTo mapCreateCardTransactionTo(PaymentRequest request);
 
     @Mappings({
             @Mapping(target = "result", source = "result"),
             @Mapping(target = "message", source = "message")
     })
-    PaymentResponse paymentResponseMapper(CreateCardPaymentResultTo to);
+    PaymentResponse mapPaymentResponse(CreateCardPaymentResultTo to);
 
     static PaymentResponse.Result mapResult(CreateCardTransactionResult result){
         switch(result){

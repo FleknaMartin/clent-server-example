@@ -8,12 +8,17 @@ spring:
   application:
     name: example-server
   datasource:
-    username:
-    password:
+    username: postgres
+    password: changeit
     driver-class-name: org.postgresql.Driver
-    url:
+    url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create-drop
     open-in-view: false
+  security:
+    user:
+      password: password
+      name: user
+      roles: USER

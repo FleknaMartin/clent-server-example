@@ -3,7 +3,7 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                  pattern="%style{%d{ISO8601}}{white} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
+                  pattern="%d [%t] %-5level %logger{36} - %msg%n%throwable"/>
         </Console>
 
         <RollingFile name="RollingFile"

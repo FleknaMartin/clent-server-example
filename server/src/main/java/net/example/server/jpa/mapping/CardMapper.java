@@ -5,8 +5,6 @@ import net.example.server.jpa.entity.Card;
 import net.example.server.jpa.mapping.util.CycleAvoidingMappingContext;
 import org.mapstruct.*;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface CardMapper {
     @Mapping(target = "payments", ignore = true)

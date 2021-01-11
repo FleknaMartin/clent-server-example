@@ -16,6 +16,9 @@ public interface UtilMapper {
 
     @Named("bigDecimal2GrpcBigDecimal")
     static BigDecimal bigDecimal2GrpcBigDecimal(java.math.BigDecimal source) {
+        if(source == null){
+            return null;
+        }
         BigInteger.Builder intResultBuilder = BigInteger.newBuilder();
         ByteString bytes = ByteString.copyFrom(source.unscaledValue().toByteArray());
         intResultBuilder.setValue(bytes);
@@ -27,12 +30,18 @@ public interface UtilMapper {
 
     @Named("grpcBigDecimal2BigDecimal")
     static java.math.BigDecimal grpcBigDecimal2BigDecimal(BigDecimal source) {
+        if(source == null){
+            return null;
+        }
         java.math.BigInteger bigInteger = new java.math.BigInteger(source.getIntVal().getValue().toByteArray());
         return new java.math.BigDecimal(bigInteger, source.getScale());
     }
 
     @Named("zonedDateTime2GrpcTimestamp")
     static Timestamp zonedDateTime2GrpcTimestamp(ZonedDateTime source) {
+        if(source == null){
+            return null;
+        }
         Timestamp.Builder builder = Timestamp.newBuilder();
         builder.setSeconds(source.toEpochSecond());
         builder.setNanos(source.getNano());
@@ -41,6 +50,9 @@ public interface UtilMapper {
 
     @Named("grpcTimestamp2ZonedDateTime")
     static ZonedDateTime grpcTimestamp2ZonedDateTime(Timestamp source) {
+        if(source == null){
+            return null;
+        }
         return ZonedDateTime.ofInstant(Instant.ofEpochSecond(source.getSeconds(), source.getNanos()), ZoneOffset.UTC);
     }
 }

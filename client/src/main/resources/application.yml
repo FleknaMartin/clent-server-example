@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: example-client
+  security:
+    user:
+      name: user
+      password: password
+      roles: USER
+  datasource:
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  quartz:
+    job-store-type: memory
+
+server:
+  port: 7070
+
+grpc:
+  server:
+    payment-service:
+      host: localhost
+      port: 7080
+      user: user
+      password: password
+      certificate: classpath:serverCert.pem
+      keepAliveTime: 5000
+
+
+job:
+  reprocess-payments:
+    statuses: PENDING
+    repeat-interval: 5000

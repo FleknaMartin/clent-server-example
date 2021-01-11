@@ -10,10 +10,13 @@ import net.example.server.jpa.mapping.config.TestConfig;
 import net.example.server.jpa.mapping.util.CycleAvoidingMappingContext;
 import net.example.server.util.TestDataProvider;
 import org.junit.jupiter.api.Test;
+import org.lognet.springboot.grpc.security.GrpcSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,10 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class CardHolderMapperTest {
 
     @Autowired
-    private CardHolderMapper mapper ;
+    private CardHolderMapper mapper;
 
     @Test
-    public void mapCardHolderTest_Success(){
+    public void mapCardHolderTest_Success() {
         CardHolderTo cardHolderTo = TestDataProvider.getDefaultTo(CardHolderTo.class);
 
         CardHolder cardHolder = mapper.mapCardHolder(cardHolderTo, new CycleAvoidingMappingContext());
@@ -48,7 +51,7 @@ class CardHolderMapperTest {
     }
 
     @Test
-    public void mapCardHolderToTest_Success(){
+    public void mapCardHolderToTest_Success() {
         CardHolder cardHolder = TestDataProvider.getDefault(CardHolder.class);
 
         CardHolderTo cardHolderTo = mapper.mapCardHolderTo(cardHolder, new CycleAvoidingMappingContext());

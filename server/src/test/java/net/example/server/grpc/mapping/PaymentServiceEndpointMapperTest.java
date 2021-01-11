@@ -17,7 +17,7 @@ class PaymentServiceEndpointMapperTest {
     public void createCardTransactionTo2PaymentRequest_Success() {
         CreateCardPaymentTo source = createTo();
 
-        PaymentRequest result = mapper.PaymentRequestMapper(source);
+        PaymentRequest result = mapper.mapPaymentRequest(source);
 
         Assertions.assertEquals(FIRST_NAME, result.getFirstName());
         Assertions.assertEquals(LAST_NAME, result.getLastName());
@@ -36,7 +36,7 @@ class PaymentServiceEndpointMapperTest {
                 .setTimestamp(TIMESTAMP)
                 .build();
 
-        CreateCardPaymentTo result = mapper.CreateCardTransactionToMapper(source);
+        CreateCardPaymentTo result = mapper.mapCreateCardTransactionTo(source);
 
         Assertions.assertEquals(FIRST_NAME, result.getPayment().getCard().getCardHolder().getFirstName());
         Assertions.assertEquals(LAST_NAME, result.getPayment().getCard().getCardHolder().getLastName());
@@ -51,7 +51,7 @@ class PaymentServiceEndpointMapperTest {
         source.setMessage(MESSAGE);
         source.setResult(RESULT_ENUM_SUCCESS);
 
-        PaymentResponse result = mapper.paymentResponseMapper(source);
+        PaymentResponse result = mapper.mapPaymentResponse(source);
 
         Assertions.assertEquals(MESSAGE, result.getMessage());
         Assertions.assertEquals(GRPC_RESULT_ENUM_SUCCESS, result.getResult());
@@ -63,7 +63,7 @@ class PaymentServiceEndpointMapperTest {
         source.setMessage(MESSAGE);
         source.setResult(RESULT_ENUM_FAILURE);
 
-        PaymentResponse result = mapper.paymentResponseMapper(source);
+        PaymentResponse result = mapper.mapPaymentResponse(source);
 
         Assertions.assertEquals(MESSAGE, result.getMessage());
         Assertions.assertEquals(GRPC_RESULT_ENUM_FAILURE, result.getResult());

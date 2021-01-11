@@ -16,6 +16,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.lognet.springboot.grpc.security.GrpcSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -74,8 +75,7 @@ public class BulkPaymentIntegrationTest extends BaseIntegrationTest {
 
         AtomicReference<StreamObserver<PaymentRequest>> requestObserverRef = new AtomicReference<>();
         PaymentServiceGrpc.PaymentServiceStub stub
-                = PaymentServiceGrpc.newStub(channel)
-                .withCallCredentials(credentials);
+                = PaymentServiceGrpc.newStub(channel);
         StreamObserver<PaymentRequest> observer = stub.streamPayments(new TestStreamObserver());
         requestObserverRef.set(observer);
         List<PaymentTo> toSuccessRequestPayments = new ArrayList<>();

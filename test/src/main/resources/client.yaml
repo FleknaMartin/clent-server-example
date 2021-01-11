@@ -1,0 +1,14 @@
+main:
+  firstName: "#firstName"
+  lastName: "#lastName"
+  cardNumber: "#cardNumber"
+  amount: "#amount"
+  send: "#sendMessage"
+  responses: "#response"
+  validationResult: "#validationResult"
+
+  fullName_1.xpath: "//tr[@id='0']/td[@col='fullName']"
+  cardNumber_1.xpath: "//tr[@id='0']/td[@col='cardNumber']"
+  amount_1.xpath: "//tr[@id='0']/td[@col='amount']"
+  result_1.xpath: "//tr[@id='0']/td[@col='result']"
+  message_1.xpath: "//tr[@id='0']/td[@col='message']"

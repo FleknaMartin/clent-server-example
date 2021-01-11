@@ -17,3 +17,8 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: false
+  security:
+    user:
+      password: password
+      name: user
+      roles: USER
